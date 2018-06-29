@@ -28,6 +28,16 @@ func (u *UserAgent) evalBrowserName(ua string) bool {
 
 	if strings.Contains(ua, "applewebkit") {
 		switch {
+		case strings.Contains(ua, " spotify/"):
+			u.Browser.Name = BrowserSpotify
+
+			// AppleBot uses webkit signature as well
+		case strings.Contains(ua, "applebot"):
+			u.Browser.Name = BrowserAppleBot
+
+		case strings.Contains(ua, "googlebot"):
+			u.Browser.Name = BrowserGoogleBot
+
 		case strings.Contains(ua, "opr/") || strings.Contains(ua, "opios/"):
 			u.Browser.Name = BrowserOpera
 
@@ -50,13 +60,6 @@ func (u *UserAgent) evalBrowserName(ua string) bool {
 
 		case strings.Contains(ua, "fxios"):
 			u.Browser.Name = BrowserFirefox
-
-		case strings.Contains(ua, " spotify/"):
-			u.Browser.Name = BrowserSpotify
-
-		// AppleBot uses webkit signature as well
-		case strings.Contains(ua, "applebot"):
-			u.Browser.Name = BrowserAppleBot
 
 		// presume it's safari unless an esoteric browser is being specified (webOSBrowser, SamsungBrowser, etc.)
 		case strings.Contains(ua, "like gecko") && strings.Contains(ua, "mozilla/") && strings.Contains(ua, "safari/") && !strings.Contains(ua, "linux") && !strings.Contains(ua, "android") && !strings.Contains(ua, "browser/") && !strings.Contains(ua, "os/"):
@@ -204,5 +207,8 @@ func (u *UserAgent) evalBrowserVersion(ua string) {
 
 	case BrowserSpotify:
 		_ = u.Browser.Version.findVersionNumber(ua, "spotify/")
+
+	case BrowserGoogleBot:
+		_ = u.Browser.Version.findVersionNumber(ua, "googlebot/")
 	}
 }
