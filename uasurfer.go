@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-//go:generate stringer -type=DeviceType,BrowserName,OSName,Platform -output=const_string.go
+//go:generate go run golang.org/x/tools/cmd/stringer@latest -type=DeviceType,BrowserName,OSName,Platform -output=const_string.go
 
 // DeviceType (int) returns a constant.
 type DeviceType int
